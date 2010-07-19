@@ -96,9 +96,7 @@
 	
 	
 	// generate notification with new location
-	if (useLocation) {
-		NSLog(@"New location: %@", [currentLocation description]);
-		
+	if (useLocation) {		
 		NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
 							  // value, key
 							  [NSNumber numberWithDouble:(currentLocation.coordinate.latitude)], @"latitude",
@@ -110,7 +108,6 @@
 }
 
 - (void) locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
-	NSLog(@"New heading: %@", [currentHeading description]);
 	NSDate* eventDate = newHeading.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
 	
@@ -123,7 +120,6 @@
 	}
 	
 	currentHeading = [newHeading copy];
-	NSLog(@"New heading: %@", [currentHeading description]);
 	
 	// generate notification with new heading
 	NSDictionary *dict = [NSDictionary dictionaryWithObject:currentHeading forKey:@"heading"];
@@ -132,25 +128,8 @@
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-	CLError err = [error code];
-	switch (err) {
-		case kCLErrorLocationUnknown:
-		
-			break;
-		case kCLErrorHeadingFailure:
-		
-			break;
-		case kCLErrorDenied:
-			// user won't let me localize. so stop it!
-		
-			[self stopLocating];
-			break;
-		case kCLErrorNetwork:
-			
-			break;
-		default:
-			break;
-	}	
+	NSDictionary *dict = [NSDictionary dictionaryWithObject:error forKey:@"error"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCoreLocationErrorNotification object:self userInfo:dict];
 }
 
 - (BOOL) locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {

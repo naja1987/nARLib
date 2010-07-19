@@ -71,6 +71,10 @@ static ARNotificationCenter *sharedNotificationCenter = nil;
 	[notificationCenter addObserver:observer selector:notificationSelector name:kLocationChangeNotification object:nil];
 }
 
+- (void) addObserverForCoreLocationError:(NSObject *)observer selector:(SEL)notificationSelector {
+	[notificationCenter addObserver:observer selector:notificationSelector name:kCoreLocationErrorNotification object:nil];
+}
+
 - (void) removeObserver:(NSObject *)observer {
 	[notificationCenter removeObserver:observer];
 }

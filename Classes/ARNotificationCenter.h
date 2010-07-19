@@ -10,6 +10,7 @@
 
 #define kHeadingChangeNotification @"ARHeadingChangeNotification"
 #define kLocationChangeNotification @"ARLocationChangeNotification"
+#define kCoreLocationErrorNotification @"ARCoreLocationErrorNotification"
 
 
 @interface ARNotificationCenter : NSObject {
@@ -20,8 +21,7 @@
 
 - (void) addObserverForLocationChanges:(NSObject*) observer selector:(SEL) notificationSelector;
 - (void) addObserverForHeadingChanges:(NSObject*) observer selector:(SEL) notificationSelector;
-
-// TODO add observer for transmitting error messages etc.
+- (void) addObserverForCoreLocationError:(NSObject*) observer selector:(SEL) notificationSelector;
 
 - (void) removeObserver:(NSObject*) observer;
 
