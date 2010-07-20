@@ -17,11 +17,17 @@
 	CLLocation			*currentLocation;
 	/// current heading of device
 	CLHeading			*currentHeading;
+	
+	/// you can simulate this service by setting heading and location by yourself
+	BOOL				isSimulatingHeading;
+	BOOL				isSimulatingLocation;
 
 }
 
-@property (readonly) CLLocation		*currentLocation;
-@property (readonly) CLHeading		*currentHeading;
+@property (readonly)	CLLocation		*currentLocation;
+@property (readonly)	CLHeading		*currentHeading;
+@property (assign)		BOOL			isSimulatingHeading;
+@property (assign)		BOOL			isSimulatingLocation;
 
 /**
  * Starts the locating services
@@ -39,4 +45,7 @@
  */
 - (void) changeToDeviceOrientation:(CLDeviceOrientation) orientation;
 
+- (void) simulateLocation:(CLLocation*) loc;
+
+- (void) simulateHeading:(CLHeading*) heading;
 @end

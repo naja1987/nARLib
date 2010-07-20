@@ -15,10 +15,12 @@
 
 	id<ARViewDelegate>	delegate;
 	CALayer				*backgroundLayer;
+	UIColor				*defaultBackgroundColor;
 }
 
 @property (nonatomic, assign)	id<ARViewDelegate>	delegate;
 @property (nonatomic, readonly)	CALayer				*backgroundLayer;
+@property (nonatomic, retain)	UIColor				*defaultBackgroundColor;
 
 /**
  * Tests, if self intersects with otherView

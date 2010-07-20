@@ -22,6 +22,8 @@
 
 @implementation ARRadarViewController
 
+@synthesize currentHeading;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -49,12 +51,13 @@
 */
 
 
+/*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
-
+*/
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -123,10 +126,15 @@
 	
 	// mark white when in view in the 360° view
 	if (fabsf(triple.object.absoluteAngle - currentHeading) < 25) {
-		triple.viewRadar.backgroundLayer.backgroundColor = [[UIColor colorWithWhite:0.8 alpha:0.65] CGColor];
+		triple.viewRadar.backgroundLayer.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.65].CGColor;
 	}
 	else {
-		triple.viewRadar.backgroundLayer.backgroundColor = [[UIColor clearColor] CGColor];
+		if (triple.viewRadar.defaultBackgroundColor != nil) {
+			triple.viewRadar.backgroundLayer.backgroundColor = triple.viewRadar.defaultBackgroundColor.CGColor;
+		}
+		else {
+			triple.viewRadar.backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
+		}
 	}
 	
 	// calculate x and y position

@@ -8,10 +8,8 @@
 
 #import "ARController.h"
 #import "ARNotificationCenter.h"
-#import "ARGeoLocation.h"
 #import "ARObjectViewTriple.h"
-
-#import <CoreLocation/CoreLocation.h>
+#import "ARGeoLocation.h"
 
 @interface ARController (Private) 
 
@@ -50,7 +48,7 @@
 	objectsAndViews = [[NSMutableArray alloc] init];
 	
 	arViewController = [[ARAugmentedRealityViewController alloc] initWithNibName:nil bundle:nil];
-	radarViewController = [[ARRadarViewController alloc] initWithNibName:nil bundle:nil];
+	radarViewController = [[ARRadarViewController alloc] initWithNibName:@"ARRadarViewController" bundle:nil];
 	activeViewController = arViewController;
 	isRadarActive = NO;
 	
@@ -87,11 +85,6 @@
 - (void)dealloc {
 	[[ARNotificationCenter sharedNotificationCenter] removeObserver:self];
 	
-	for (ARObjectViewTriple *triple in objectsAndViews) {
-		[triple.viewAR release];
-		[triple.viewRadar release];
-		[triple.object release];
-	}
 	[objectsAndViews removeAllObjects];
 	[objectsAndViews release];
 	
@@ -114,12 +107,17 @@
 	}
 	else {
 		triple = [[ARObjectViewTriple alloc] initWithObject:object ViewAR:viewAR ViewRadar:viewRadar];
+		
+		[object updateWithNewHeading:currentHeading];
+		if ([object isKindOfClass:[ARGeoLocation class]]) {
+			[(ARGeoLocation*) object updateWithNewLocation:currentLocation];
+		}
+		
 		[objectsAndViews addObject:triple];
 		[triple release];
 	}
 	
-	[arViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
-	[radarViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (void) removeObject:(ARObject *)object {
@@ -133,8 +131,7 @@
 	
 	[objectsAndViews removeObject:triple];
 	
-	[arViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
-	[radarViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];	
+	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (void) removeAllObjects {
@@ -144,8 +141,7 @@
 	}
 	[objectsAndViews removeAllObjects];
 	
-	[arViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
-	[radarViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (BOOL) knowsARObject:(ARObject *)object {
@@ -179,6 +175,8 @@
 	CLHeading *heading = [[notification userInfo] valueForKey:@"heading"];
 	currentHeading = heading.trueHeading;
 	
+	arViewController.currentHeading = currentHeading;
+	radarViewController.currentHeading = currentHeading;
 	
 	for (ARObjectViewTriple *pair in objectsAndViews) {
 		[pair.object updateWithNewHeading:currentHeading];

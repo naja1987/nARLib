@@ -67,6 +67,10 @@ static double maxDistance;
 #pragma mark Implementation
 
 - (void) updateWithNewLocation:(CLLocation *)location {
+	if (location == nil) {
+		return;
+	}
+	
 	CLLocation *tmpLoc = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
 	distanceFromCurrentLocation = [location distanceFromLocation:tmpLoc];
 	

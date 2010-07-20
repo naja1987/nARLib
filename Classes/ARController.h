@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "ARObject.h"
 #import "ARView.h"
@@ -17,6 +18,7 @@
 	
 	NSMutableArray						*objectsAndViews;
 	double								currentHeading;
+	CLLocation							*currentLocation;
 	
 	ARAugmentedRealityViewController	*arViewController;
 	ARRadarViewController				*radarViewController;

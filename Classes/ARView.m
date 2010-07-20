@@ -11,7 +11,7 @@
 
 @implementation ARView
 
-@synthesize delegate, backgroundLayer;
+@synthesize delegate, backgroundLayer, defaultBackgroundColor;
 
 #pragma mark Constructors
 
@@ -23,6 +23,8 @@
 		backgroundLayer.frame = self.bounds;		
 		backgroundLayer.backgroundColor = [[UIColor clearColor] CGColor];
 		backgroundLayer.opaque = NO;
+		
+		defaultBackgroundColor = nil;
 		
 		[self.layer addSublayer:backgroundLayer];
     }
@@ -39,6 +41,9 @@
 
 - (void)dealloc {
 	delegate = nil;
+
+	[defaultBackgroundColor release];
+	[backgroundLayer release];
     [super dealloc];
 }
 

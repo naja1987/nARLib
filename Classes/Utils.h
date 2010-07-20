@@ -8,11 +8,6 @@
  */
 
 // radians <-> degree conversion using CGFloat
-CGFloat DegreesToRadians(CGFloat degrees) { 
-	return degrees * M_PI / 180; 
-};
-
-CGFloat RadiansToDegrees(CGFloat radians) { 
-	return radians * 180 / M_PI; 
-};
+double DegreesToRadians(double degrees);
+double RadiansToDegrees(double radians);
 

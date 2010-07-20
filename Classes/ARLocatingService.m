@@ -12,7 +12,9 @@
 @implementation ARLocatingService
 
 @synthesize currentLocation,
-			currentHeading;
+			currentHeading,
+			isSimulatingHeading,
+			isSimulatingLocation;
 
 #pragma mark Constructors
 
@@ -29,6 +31,9 @@
 		// default position is landscape with home button right
 		locationManager.headingOrientation = CLDeviceOrientationLandscapeLeft;
 		locationManager.headingFilter = kCLHeadingFilterNone;
+		
+		isSimulatingHeading = NO;
+		isSimulatingLocation = NO;
 	}
 	
 	return self;
@@ -68,6 +73,10 @@
 #pragma mark CLLocationManagerDelegate protocol
 
 - (void) locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+	if (isSimulatingLocation) {
+		return;
+	}
+	
 	
     NSDate* eventDate = newLocation.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
@@ -88,7 +97,10 @@
 	
 	// better accuracy then needed or of former position, so just mark as new current position
 	else if (newLocation.horizontalAccuracy <= locationManager.desiredAccuracy || newLocation.horizontalAccuracy <= currentLocation.horizontalAccuracy) {
-		currentLocation = [newLocation copy];
+		if (currentLocation != newLocation) {
+			[currentLocation release];
+			currentLocation = [newLocation copy];
+		}
 	}
 	else {
 		useLocation = NO;
@@ -108,6 +120,10 @@
 }
 
 - (void) locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
+	if (isSimulatingHeading) {
+		return;
+	}
+	
 	NSDate* eventDate = newHeading.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
 	
@@ -119,7 +135,10 @@
 		return;
 	}
 	
-	currentHeading = [newHeading copy];
+	if (currentHeading != newHeading) {
+		[currentHeading release];
+		currentHeading = [newHeading copy];
+	}
 	
 	// generate notification with new heading
 	NSDictionary *dict = [NSDictionary dictionaryWithObject:currentHeading forKey:@"heading"];
@@ -128,6 +147,7 @@
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	// generate notification with error
 	NSDictionary *dict = [NSDictionary dictionaryWithObject:error forKey:@"error"];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kCoreLocationErrorNotification object:self userInfo:dict];
 }
@@ -140,6 +160,31 @@
 
 - (void)changeToDeviceOrientation:(CLDeviceOrientation)orientation {
 	locationManager.headingOrientation = orientation;
+}
+
+- (void) simulateHeading:(CLHeading *)heading {
+	if (currentHeading != heading) {
+		[currentHeading release];
+		currentHeading = [heading retain];
+	}
+	
+	// generate notification with new heading
+	NSDictionary *dict = [NSDictionary dictionaryWithObject:currentHeading forKey:@"heading"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kHeadingChangeNotification object:self userInfo:dict]; 
+}
+
+- (void)simulateLocation:(CLLocation *)loc {
+	if (currentLocation != loc) {
+		[currentLocation release];
+		currentLocation = [loc retain];
+	}
+	
+	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+						  // value, key
+						  [NSNumber numberWithDouble:(currentLocation.coordinate.latitude)], @"latitude",
+						  [NSNumber numberWithDouble:(currentLocation.coordinate.longitude)], @"longitude",
+						  nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kLocationChangeNotification object:self userInfo:dict];
 }
 
 @end

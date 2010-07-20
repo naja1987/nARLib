@@ -25,9 +25,9 @@
 
 - (id)initWithObject:(ARObject *)obj ViewAR:(ARView*)vAR ViewRadar:(ARView*) vRadar {
 	if (self = [super init]) {
-		object = obj;
-		viewAR = vAR;
-		viewRadar = vRadar;
+		self.object = obj;
+		self.viewAR = vAR;
+		self.viewRadar = vRadar;
 	}
 	
 	return self;

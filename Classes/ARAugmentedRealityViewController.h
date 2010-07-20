@@ -17,4 +17,6 @@
 	double			currentHeading;
 }
 
+@property (assign) double currentHeading;
+
 @end

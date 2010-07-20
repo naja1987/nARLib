@@ -24,6 +24,8 @@
 
 @implementation ARAugmentedRealityViewController
 
+@synthesize currentHeading;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -210,10 +212,6 @@
 			}
 		}
 		[overlaped release];
-		
-//		for(ARObjectViewTriple *triple in unoverlaped) {
-//			[arTriples addObject:];
-//		}
 		
 		[unoverlaped removeAllObjects];
 		[unoverlaped release];
