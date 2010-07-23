@@ -77,6 +77,10 @@
 	[super dealloc];
 }
 
++ (BOOL) isHeadingAvailable {
+	return [locationManager headingAvailable];
+}
+
 #pragma mark Start/ Stop
 
 - (void) startLocating {

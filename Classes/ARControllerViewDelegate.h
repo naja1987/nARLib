@@ -43,8 +43,21 @@
 
 @protocol ARControllerViewDelegate
 
+/**
+ * Updates the view from this delegate with the new heading data
+ * @param heading
+ */
 - (void) updateDisplayWithHeading:(double) heading;
+
+/**
+ * Replaces the displayed views on the delegate's view with the new views of the triples array
+ * @param triples array of ARObjectViewTriple
+ */
 - (void) replaceViewsWithViewsFromObjectViewTriple:(NSMutableArray*) triples;
+
+/**
+ * Just redraw all views of the delegate
+ */
 - (void) redraw;
 
 @end

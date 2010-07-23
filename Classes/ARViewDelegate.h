@@ -39,6 +39,10 @@
 
 @protocol ARViewDelegate
 
+/**
+ * Updates the view from this delegate with the information of the object
+ * @param object
+ */
 - (void) updateWithInfosFromObject:(ARObject*) object;
 
 @end

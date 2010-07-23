@@ -56,9 +56,26 @@
  */
 - (BOOL) intersectsWithARView:(ARView*) otherView;
 
+/**
+ * Tests, if self would intersect with otherView, if self would be at position position
+ * @param otherView
+ * @param position
+ * @return
+ */
 - (BOOL) wouldIntersectWithARView:(ARView *)otherView atPosition:(CGPoint)position;
 
-- (CGFloat) distanceToOtherARView:(ARView *)view;
+/**
+ * Calculates the distance from self to otherView
+ * @param otherView
+ * @return distance
+ */
+- (CGFloat) distanceToOtherARView:(ARView *)otherView;
 
+/**
+ * Calculates the distance between the points p1 and p2
+ * @param p1
+ * @param p2
+ * @return distance
+ */
 - (CGFloat) distanceBetweenPosition1:(CGPoint)p1 Position2:(CGPoint)p2;
 @end

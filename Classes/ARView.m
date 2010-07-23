@@ -122,8 +122,8 @@
 	return YES;
 }
 
-- (CGFloat) distanceToOtherARView:(ARView*) view {
-	return [self distanceBetweenPosition1:self.layer.position Position2:view.layer.position];
+- (CGFloat) distanceToOtherARView:(ARView*) otherView {
+	return [self distanceBetweenPosition1:self.layer.position Position2:otherView.layer.position];
 }
 
 - (CGFloat) distanceBetweenPosition1:(CGPoint)p1 Position2:(CGPoint)p2 {

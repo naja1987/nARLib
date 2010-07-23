@@ -44,12 +44,37 @@
 	NSNotificationCenter *notificationCenter;
 }
 
+/**
+ * Returns the singleton instance of the notification center
+ * @return
+ */
 + (ARNotificationCenter*) sharedNotificationCenter;
 
+/**
+ * Adds a new observer for location changes
+ * @param observer
+ * @param notificationSelector method to invoke on notification
+ */
 - (void) addObserverForLocationChanges:(NSObject*) observer selector:(SEL) notificationSelector;
+
+/**
+ * Adds a new observer for heading changes
+ * @param observer
+ * @param notificationSelector method to invoke on notification
+ */
 - (void) addObserverForHeadingChanges:(NSObject*) observer selector:(SEL) notificationSelector;
+
+/**
+ * Adds a new observer for location errors
+ * @param observer
+ * @param notificationSelector method to invoke on notification
+ */
 - (void) addObserverForCoreLocationError:(NSObject*) observer selector:(SEL) notificationSelector;
 
+/**
+ * Removes the observer from receiving notifications
+ * @param observer
+ */
 - (void) removeObserver:(NSObject*) observer;
 
 @end

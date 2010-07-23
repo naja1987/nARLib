@@ -57,6 +57,12 @@
 @property (assign)		BOOL			isSimulatingLocation;
 
 /**
+ * Determines if heading is available on the current device
+ * @return YES, if we can receive heading information
+ */
++ (BOOL) isHeadingAvailable;
+
+/**
  * Starts the locating services
  */
 - (void) startLocating;
@@ -72,7 +78,15 @@
  */
 - (void) changeToDeviceOrientation:(CLDeviceOrientation) orientation;
 
+/**
+ * Simulates a new location and sets it to loc
+ * @param loc new location
+ */
 - (void) simulateLocation:(CLLocation*) loc;
 
+/**
+ * Simulates a new heading direction and sets it to heading
+ * @param heading new heading (you can't create CLHeading instances by yourself but you can create a "faked" heading class with the same functionality)
+ */
 - (void) simulateHeading:(CLHeading*) heading;
 @end

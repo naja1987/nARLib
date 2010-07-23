@@ -42,7 +42,7 @@
 #import "ARControllerViewRadar.h"
 
 @interface ARControllerView : UIView {
-	
+
 	NSMutableArray						*objectsAndViews;
 	double								currentHeading;
 	CLLocation							*currentLocation;
@@ -54,17 +54,60 @@
 	BOOL								isRadarActive;
 }
 
-@property (nonatomic, readonly) NSMutableArray *objectsAndViews;
-
+/**
+ * Adds a new object with a specified augmented reality view and a radar view to the screen.
+ * If the object is already present, its view get replaced by the new ones
+ * @param object
+ * @param viewAR view to present in augmented reality mode
+ * @param viewRadar view to present in radar mode
+ */
 - (void) addObject:(ARObject*) object WithViewAR:(ARView*) viewAR WithViewRadar:(ARView*) viewRadar;
+
+/** 
+ * Adds a set of objects with augmented reality views and radar views to the sceen.
+ * If the object is already present, its views get replaced by the new ones
+ * The order in the mutable arrays must be the same!
+ * @param objects
+ * @param viewsAR views to present in augmented reality mode
+ * @param viewsRadar views to present in radar mode
+ */
 - (void) addObjects:(NSMutableArray*)objects WithViewsAR:(NSMutableArray*)viewsAR WithViewsRadar:(NSMutableArray*)viewsRadar;
+
+/**
+ * Removes the object from the screen
+ * @param object
+ */
 - (void) removeObject:(ARObject*) object;
+
+/**
+ * Removes all objects from the screen
+ */
 - (void) removeAllObjects;
+
+/**
+ * Redraws all objects on the screen
+ */
 - (void) redraw;
 
+/**
+ * Activates (or deactivates) the radar view.
+ * @param shouldActivate if YES, the radar view gets activated, if NO the normal augmented reality view is shown
+ */
 - (void) activateRadarView:(BOOL) shouldActivate;
 
+/**
+ * Process a location update (by notification)
+ * @param notification UserInfo: 
+ *           object: NSNumber (double) key: longitude
+ *           object: NSNumber (double) key: latitude 
+ */
 - (void) processLocationUpdate:(NSNotification*) notification;
+
+/**
+ * Process a heading update (by notification)
+ * @param notification UserInfo: 
+ *           object: CLHeading key: heading
+ */
 - (void) processHeadingUpdate:(NSNotification*) notification;
 
 
