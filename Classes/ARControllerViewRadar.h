@@ -1,5 +1,5 @@
 //
-//  ARRadarViewController.h
+//  ARControllerViewRadar.h
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ARViewControllerDelegate.h"
+#import "ARControllerViewDelegate.h"
 
-@interface ARRadarViewController : UIViewController <ARViewControllerDelegate> {
+@interface ARControllerViewRadar : UIView <ARControllerViewDelegate> {
 	
 	NSMutableArray	*arTriples;
 	double			currentHeading;
+	
+	UIImage			*radarImage;
+	UIImageView		*imageView;
 }
 
 @property (assign) double currentHeading;

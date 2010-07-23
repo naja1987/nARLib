@@ -1,19 +1,19 @@
-    //
-//  ARAugmentedRealityViewController.m
+//
+//  ARControllerViewAugmentedReality.m
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
 //  Copyright 2010 Naja's Corner. All rights reserved.
 //
 
-#import "ARAugmentedRealityViewController.h"
+#import "ARControllerViewAugmentedReality.h"
 #import "ARView.h"
 #import "ARObjectViewTriple.h"
 #import "ARGeoLocation.h"
 
 #define kAR3DPerspectiveZDistance -500
 
-@interface ARAugmentedRealityViewController (Private) 
+@interface ARControllerViewAugmentedReality (Private) 
 
 - (void) moveAndTransformARViewOfTriple:(ARObjectViewTriple*) triple;
 - (CGPoint) calculatePositionOfARObjectViewTriple:(ARObjectViewTriple*) triple;
@@ -22,65 +22,33 @@
 @end
 
 
-@implementation ARAugmentedRealityViewController
+@implementation ARControllerViewAugmentedReality
 
 @synthesize currentHeading;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
+- (id)initWithFrame:(CGRect)frame {
+    if ((self = [super initWithFrame:frame])) {
+		arTriples = [[NSMutableArray alloc] init];
+		
+		CATransform3D sublayerTransform = CATransform3DIdentity;
+		sublayerTransform.m34 = 1.0 / -kAR3DPerspectiveZDistance; // do 3d perspective magic
+		
+		transformerView = [[UIView alloc] initWithFrame:self.bounds];
+		transformerView.opaque = NO;
+		transformerView.backgroundColor = [UIColor clearColor];
+		transformerView.layer.sublayerTransform = sublayerTransform;
+		[self addSubview:transformerView];
     }
     return self;
 }
-*/
-
-
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-	[super loadView];
-	
-	arTriples = [[NSMutableArray alloc] init];
-	
-	CATransform3D sublayerTransform = CATransform3DIdentity;
-	sublayerTransform.m34 = 1.0 / -kAR3DPerspectiveZDistance; // do 3d perspective magic
-	
-	transformerView = [[UIView alloc] initWithFrame:self.view.bounds];
-	transformerView.opaque = NO;
-	transformerView.backgroundColor = [UIColor clearColor];
-	transformerView.layer.sublayerTransform = sublayerTransform;
-	[self.view addSubview:transformerView];
-}
-
 
 /*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 
 - (void)dealloc {
@@ -124,6 +92,14 @@
 			[self moveAndTransformARViewOfTriple:triple];
 		}
 		[self unoverlapViews];
+	}
+}
+
+- (void) redraw {
+	@synchronized(self) {
+		for (ARObjectViewTriple *triple in arTriples) {
+			[self moveAndTransformARViewOfTriple:triple];
+		}
 	}
 }
 

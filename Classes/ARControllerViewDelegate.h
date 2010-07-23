@@ -1,5 +1,5 @@
 //
-//  ARViewControllerDelegate.h
+//  ARControllerViewDelegate.h
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
@@ -14,9 +14,10 @@
 #define kScreenWidth  320
 #define kScreenHeight 480
 
-@protocol ARViewControllerDelegate
+@protocol ARControllerViewDelegate
 
 - (void) updateDisplayWithHeading:(double) heading;
 - (void) replaceViewsWithViewsFromObjectViewTriple:(NSMutableArray*) triples;
+- (void) redraw;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  ARAugmentedRealityViewController.h
+//  ARControllerViewAugmentedReality.h
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ARViewControllerDelegate.h"
+#import "ARControllerViewDelegate.h"
 #import "ARObjectViewTriple.h"
 
-@interface ARAugmentedRealityViewController : UIViewController <ARViewControllerDelegate> {
+@interface ARControllerViewAugmentedReality : UIView <ARControllerViewDelegate> {
 	NSMutableArray	*arTriples;
 	UIView			*transformerView;
 	

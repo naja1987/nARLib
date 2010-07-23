@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2925E54711F49D3600D61772 /* ARAugmentedRealityViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53211F49D3600D61772 /* ARAugmentedRealityViewController.h */; };
-		2925E54811F49D3600D61772 /* ARAugmentedRealityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53311F49D3600D61772 /* ARAugmentedRealityViewController.m */; };
-		2925E54911F49D3600D61772 /* ARController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53411F49D3600D61772 /* ARController.h */; };
-		2925E54A11F49D3600D61772 /* ARController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53511F49D3600D61772 /* ARController.m */; };
+		2925E54711F49D3600D61772 /* ARControllerViewAugmentedReality.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53211F49D3600D61772 /* ARControllerViewAugmentedReality.h */; };
+		2925E54811F49D3600D61772 /* ARControllerViewAugmentedReality.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53311F49D3600D61772 /* ARControllerViewAugmentedReality.m */; };
+		2925E54911F49D3600D61772 /* ARControllerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53411F49D3600D61772 /* ARControllerView.h */; };
+		2925E54A11F49D3600D61772 /* ARControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53511F49D3600D61772 /* ARControllerView.m */; };
 		2925E54B11F49D3600D61772 /* ARGeoLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53611F49D3600D61772 /* ARGeoLocation.h */; };
 		2925E54C11F49D3600D61772 /* ARGeoLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53711F49D3600D61772 /* ARGeoLocation.m */; };
 		2925E54D11F49D3600D61772 /* ARLocatingService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53811F49D3600D61772 /* ARLocatingService.m */; };
@@ -21,11 +21,11 @@
 		2925E55211F49D3600D61772 /* ARObjectDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53D11F49D3600D61772 /* ARObjectDelegate.h */; };
 		2925E55311F49D3600D61772 /* ARObjectViewTriple.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53E11F49D3600D61772 /* ARObjectViewTriple.h */; };
 		2925E55411F49D3600D61772 /* ARObjectViewTriple.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53F11F49D3600D61772 /* ARObjectViewTriple.m */; };
-		2925E55511F49D3600D61772 /* ARRadarViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54011F49D3600D61772 /* ARRadarViewController.h */; };
-		2925E55611F49D3600D61772 /* ARRadarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E54111F49D3600D61772 /* ARRadarViewController.m */; };
+		2925E55511F49D3600D61772 /* ARControllerViewRadar.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54011F49D3600D61772 /* ARControllerViewRadar.h */; };
+		2925E55611F49D3600D61772 /* ARControllerViewRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E54111F49D3600D61772 /* ARControllerViewRadar.m */; };
 		2925E55711F49D3600D61772 /* ARView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54211F49D3600D61772 /* ARView.h */; };
 		2925E55811F49D3600D61772 /* ARView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E54311F49D3600D61772 /* ARView.m */; };
-		2925E55911F49D3600D61772 /* ARViewControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54411F49D3600D61772 /* ARViewControllerDelegate.h */; };
+		2925E55911F49D3600D61772 /* ARControllerViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54411F49D3600D61772 /* ARControllerViewDelegate.h */; };
 		2925E55A11F49D3600D61772 /* ARViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54511F49D3600D61772 /* ARViewDelegate.h */; };
 		2925E55B11F49D3600D61772 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54611F49D3600D61772 /* Utils.h */; };
 		29489B4411ED15A2005B6F07 /* ARLocatingService.h in Headers */ = {isa = PBXBuildFile; fileRef = 29489B4211ED15A2005B6F07 /* ARLocatingService.h */; };
@@ -38,10 +38,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2925E53211F49D3600D61772 /* ARAugmentedRealityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAugmentedRealityViewController.h; path = Classes/ARAugmentedRealityViewController.h; sourceTree = "<group>"; };
-		2925E53311F49D3600D61772 /* ARAugmentedRealityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAugmentedRealityViewController.m; path = Classes/ARAugmentedRealityViewController.m; sourceTree = "<group>"; };
-		2925E53411F49D3600D61772 /* ARController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARController.h; path = Classes/ARController.h; sourceTree = "<group>"; };
-		2925E53511F49D3600D61772 /* ARController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARController.m; path = Classes/ARController.m; sourceTree = "<group>"; };
+		2925E53211F49D3600D61772 /* ARControllerViewAugmentedReality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerViewAugmentedReality.h; path = Classes/ARControllerViewAugmentedReality.h; sourceTree = "<group>"; };
+		2925E53311F49D3600D61772 /* ARControllerViewAugmentedReality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARControllerViewAugmentedReality.m; path = Classes/ARControllerViewAugmentedReality.m; sourceTree = "<group>"; };
+		2925E53411F49D3600D61772 /* ARControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerView.h; path = Classes/ARControllerView.h; sourceTree = "<group>"; };
+		2925E53511F49D3600D61772 /* ARControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARControllerView.m; path = Classes/ARControllerView.m; sourceTree = "<group>"; };
 		2925E53611F49D3600D61772 /* ARGeoLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARGeoLocation.h; path = Classes/ARGeoLocation.h; sourceTree = "<group>"; };
 		2925E53711F49D3600D61772 /* ARGeoLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARGeoLocation.m; path = Classes/ARGeoLocation.m; sourceTree = "<group>"; };
 		2925E53811F49D3600D61772 /* ARLocatingService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLocatingService.m; path = Classes/ARLocatingService.m; sourceTree = "<group>"; };
@@ -52,16 +52,15 @@
 		2925E53D11F49D3600D61772 /* ARObjectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARObjectDelegate.h; path = Classes/ARObjectDelegate.h; sourceTree = "<group>"; };
 		2925E53E11F49D3600D61772 /* ARObjectViewTriple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARObjectViewTriple.h; path = Classes/ARObjectViewTriple.h; sourceTree = "<group>"; };
 		2925E53F11F49D3600D61772 /* ARObjectViewTriple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARObjectViewTriple.m; path = Classes/ARObjectViewTriple.m; sourceTree = "<group>"; };
-		2925E54011F49D3600D61772 /* ARRadarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARRadarViewController.h; path = Classes/ARRadarViewController.h; sourceTree = "<group>"; };
-		2925E54111F49D3600D61772 /* ARRadarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARRadarViewController.m; path = Classes/ARRadarViewController.m; sourceTree = "<group>"; };
+		2925E54011F49D3600D61772 /* ARControllerViewRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerViewRadar.h; path = Classes/ARControllerViewRadar.h; sourceTree = "<group>"; };
+		2925E54111F49D3600D61772 /* ARControllerViewRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARControllerViewRadar.m; path = Classes/ARControllerViewRadar.m; sourceTree = "<group>"; };
 		2925E54211F49D3600D61772 /* ARView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARView.h; path = Classes/ARView.h; sourceTree = "<group>"; };
 		2925E54311F49D3600D61772 /* ARView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARView.m; path = Classes/ARView.m; sourceTree = "<group>"; };
-		2925E54411F49D3600D61772 /* ARViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewControllerDelegate.h; path = Classes/ARViewControllerDelegate.h; sourceTree = "<group>"; };
+		2925E54411F49D3600D61772 /* ARControllerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerViewDelegate.h; path = Classes/ARControllerViewDelegate.h; sourceTree = "<group>"; };
 		2925E54511F49D3600D61772 /* ARViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewDelegate.h; path = Classes/ARViewDelegate.h; sourceTree = "<group>"; };
 		2925E54611F49D3600D61772 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = Classes/Utils.h; sourceTree = "<group>"; };
 		29489B4211ED15A2005B6F07 /* ARLocatingService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLocatingService.h; path = Classes/ARLocatingService.h; sourceTree = "<group>"; };
 		2984C1E011F5E78900240B85 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = ../narlib/Classes/Utils.m; sourceTree = SOURCE_ROOT; };
-		2984C3AE11F60C2900240B85 /* ARRadarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ARRadarViewController.xib; path = ../narlib/ARRadarViewController.xib; sourceTree = SOURCE_ROOT; };
 		2984C3B011F60C3E00240B85 /* radar_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = radar_circle.png; path = ../narlib/Images/radar_circle.png; sourceTree = SOURCE_ROOT; };
 		298969E611F49368005256D8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		298969EA11F4937B005256D8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -122,7 +121,7 @@
 				2979DD3F11EF28E30080B36B /* Core */,
 				2979DD3D11EF28A40080B36B /* Model */,
 				2979DD3E11EF28BF0080B36B /* Views */,
-				2979DD4011EF28FB0080B36B /* View Controllers */,
+				2979DD4011EF28FB0080B36B /* Controller Views */,
 				2925E54611F49D3600D61772 /* Utils.h */,
 				2984C1E011F5E78900240B85 /* Utils.m */,
 			);
@@ -160,29 +159,28 @@
 				2925E53811F49D3600D61772 /* ARLocatingService.m */,
 				2925E53911F49D3600D61772 /* ARNotificationCenter.h */,
 				2925E53A11F49D3600D61772 /* ARNotificationCenter.m */,
-				2925E53411F49D3600D61772 /* ARController.h */,
-				2925E53511F49D3600D61772 /* ARController.m */,
+				2925E53411F49D3600D61772 /* ARControllerView.h */,
+				2925E53511F49D3600D61772 /* ARControllerView.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
 		};
-		2979DD4011EF28FB0080B36B /* View Controllers */ = {
+		2979DD4011EF28FB0080B36B /* Controller Views */ = {
 			isa = PBXGroup;
 			children = (
-				2925E54411F49D3600D61772 /* ARViewControllerDelegate.h */,
-				2925E53211F49D3600D61772 /* ARAugmentedRealityViewController.h */,
-				2925E53311F49D3600D61772 /* ARAugmentedRealityViewController.m */,
-				2925E54011F49D3600D61772 /* ARRadarViewController.h */,
-				2925E54111F49D3600D61772 /* ARRadarViewController.m */,
+				2925E54411F49D3600D61772 /* ARControllerViewDelegate.h */,
+				2925E53211F49D3600D61772 /* ARControllerViewAugmentedReality.h */,
+				2925E53311F49D3600D61772 /* ARControllerViewAugmentedReality.m */,
+				2925E54011F49D3600D61772 /* ARControllerViewRadar.h */,
+				2925E54111F49D3600D61772 /* ARControllerViewRadar.m */,
 			);
-			name = "View Controllers";
+			name = "Controller Views";
 			sourceTree = "<group>";
 		};
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
 				2984C3B011F60C3E00240B85 /* radar_circle.png */,
-				2984C3AE11F60C2900240B85 /* ARRadarViewController.xib */,
 				AA747D9E0F9514B9006C5449 /* nARLib_Prefix.pch */,
 			);
 			name = "Other Sources";
@@ -197,16 +195,16 @@
 			files = (
 				AA747D9F0F9514B9006C5449 /* nARLib_Prefix.pch in Headers */,
 				29489B4411ED15A2005B6F07 /* ARLocatingService.h in Headers */,
-				2925E54711F49D3600D61772 /* ARAugmentedRealityViewController.h in Headers */,
-				2925E54911F49D3600D61772 /* ARController.h in Headers */,
+				2925E54711F49D3600D61772 /* ARControllerViewAugmentedReality.h in Headers */,
+				2925E54911F49D3600D61772 /* ARControllerView.h in Headers */,
 				2925E54B11F49D3600D61772 /* ARGeoLocation.h in Headers */,
 				2925E54E11F49D3600D61772 /* ARNotificationCenter.h in Headers */,
 				2925E55011F49D3600D61772 /* ARObject.h in Headers */,
 				2925E55211F49D3600D61772 /* ARObjectDelegate.h in Headers */,
 				2925E55311F49D3600D61772 /* ARObjectViewTriple.h in Headers */,
-				2925E55511F49D3600D61772 /* ARRadarViewController.h in Headers */,
+				2925E55511F49D3600D61772 /* ARControllerViewRadar.h in Headers */,
 				2925E55711F49D3600D61772 /* ARView.h in Headers */,
-				2925E55911F49D3600D61772 /* ARViewControllerDelegate.h in Headers */,
+				2925E55911F49D3600D61772 /* ARControllerViewDelegate.h in Headers */,
 				2925E55A11F49D3600D61772 /* ARViewDelegate.h in Headers */,
 				2925E55B11F49D3600D61772 /* Utils.h in Headers */,
 			);
@@ -258,14 +256,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2925E54811F49D3600D61772 /* ARAugmentedRealityViewController.m in Sources */,
-				2925E54A11F49D3600D61772 /* ARController.m in Sources */,
+				2925E54811F49D3600D61772 /* ARControllerViewAugmentedReality.m in Sources */,
+				2925E54A11F49D3600D61772 /* ARControllerView.m in Sources */,
 				2925E54C11F49D3600D61772 /* ARGeoLocation.m in Sources */,
 				2925E54D11F49D3600D61772 /* ARLocatingService.m in Sources */,
 				2925E54F11F49D3600D61772 /* ARNotificationCenter.m in Sources */,
 				2925E55111F49D3600D61772 /* ARObject.m in Sources */,
 				2925E55411F49D3600D61772 /* ARObjectViewTriple.m in Sources */,
-				2925E55611F49D3600D61772 /* ARRadarViewController.m in Sources */,
+				2925E55611F49D3600D61772 /* ARControllerViewRadar.m in Sources */,
 				2925E55811F49D3600D61772 /* ARView.m in Sources */,
 				2984C1E111F5E78900240B85 /* Utils.m in Sources */,
 			);

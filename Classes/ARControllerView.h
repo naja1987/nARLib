@@ -1,5 +1,5 @@
 //
-//  ARController.h
+//  ARControllerView.h
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
@@ -11,18 +11,18 @@
 
 #import "ARObject.h"
 #import "ARView.h"
-#import "ARAugmentedRealityViewController.h"
-#import "ARRadarViewController.h"
+#import "ARControllerViewAugmentedReality.h"
+#import "ARControllerViewRadar.h"
 
-@interface ARController : UIViewController {
+@interface ARControllerView : UIView {
 	
 	NSMutableArray						*objectsAndViews;
 	double								currentHeading;
 	CLLocation							*currentLocation;
 	
-	ARAugmentedRealityViewController	*arViewController;
-	ARRadarViewController				*radarViewController;
-	id<ARViewControllerDelegate>		activeViewController;
+	ARControllerViewAugmentedReality	*controllerViewAR;
+	ARControllerViewRadar				*controllerViewRadar;
+	id<ARControllerViewDelegate>		activeControllerView;
 	
 	BOOL								isRadarActive;
 }
@@ -32,6 +32,7 @@
 - (void) addObject:(ARObject*) object WithViewAR:(ARView*) viewAR WithViewRadar:(ARView*) viewRadar;
 - (void) removeObject:(ARObject*) object;
 - (void) removeAllObjects;
+- (void) redraw;
 
 - (void) activateRadarView:(BOOL) shouldActivate;
 

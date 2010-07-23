@@ -1,17 +1,18 @@
-    //
-//  ARController.m
+//
+//  ARControllerView.m
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
 //  Copyright 2010 Naja's Corner. All rights reserved.
 //
 
-#import "ARController.h"
+#import "ARControllerView.h"
 #import "ARNotificationCenter.h"
 #import "ARObjectViewTriple.h"
 #import "ARGeoLocation.h"
+#import "Utils.h"
 
-@interface ARController (Private) 
+@interface ARControllerView (Private) 
 
 - (BOOL) knowsARObject:(ARObject*) object;
 - (ARObjectViewTriple*) getTripleOfObject:(ARObject*) object;
@@ -19,67 +20,46 @@
 @end
 
 
-@implementation ARController
+@implementation ARControllerView
 
 @synthesize objectsAndViews;
 
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
+- (id)initWithFrame:(CGRect)frame {
+    if ((self = [super initWithFrame:frame])) {
+		objectsAndViews = [[NSMutableArray alloc] init];
+		
+		controllerViewAR = [[ARControllerViewAugmentedReality alloc] initWithFrame:self.frame];
+		controllerViewRadar = [[ARControllerViewRadar alloc] initWithFrame:self.frame];
+		
+		activeControllerView = controllerViewAR;
+		isRadarActive = NO;
+		
+		[self addSubview:controllerViewRadar];
+		[self addSubview:controllerViewAR];
+		controllerViewRadar.hidden = YES;
+		controllerViewRadar.alpha = 0.0;
+		
+		// register for notifications
+		[[ARNotificationCenter sharedNotificationCenter] addObserverForHeadingChanges:self selector:@selector(processHeadingUpdate:)];
+		[[ARNotificationCenter sharedNotificationCenter] addObserverForLocationChanges:self selector:@selector(processLocationUpdate:)];
+		
+		self.autoresizingMask =UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+		controllerViewAR.contentMode = UIViewContentModeCenter;
+		controllerViewRadar.contentMode = UIViewContentModeCenter;
+		controllerViewAR.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+		controllerViewRadar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     }
     return self;
 }
-*/
 
 /*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
-	objectsAndViews = [[NSMutableArray alloc] init];
-	
-	arViewController = [[ARAugmentedRealityViewController alloc] initWithNibName:nil bundle:nil];
-	radarViewController = [[ARRadarViewController alloc] initWithNibName:@"ARRadarViewController" bundle:nil];
-	activeViewController = arViewController;
-	isRadarActive = NO;
-	
-	[self.view addSubview:arViewController.view];
-	
-	// register for notifications
-	[[ARNotificationCenter sharedNotificationCenter] addObserverForHeadingChanges:self selector:@selector(processHeadingUpdate:)];
-	[[ARNotificationCenter sharedNotificationCenter] addObserverForLocationChanges:self selector:@selector(processLocationUpdate:)];
-}
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 
 - (void)dealloc {
@@ -88,8 +68,11 @@
 	[objectsAndViews removeAllObjects];
 	[objectsAndViews release];
 	
-	[arViewController release];
-	[radarViewController release];
+	[controllerViewAR removeFromSuperview];
+	[controllerViewRadar removeFromSuperview];
+	
+	[controllerViewAR release];
+	[controllerViewRadar release];
     [super dealloc];
 }
 
@@ -117,7 +100,7 @@
 		[triple release];
 	}
 	
-	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (void) removeObject:(ARObject *)object {
@@ -131,7 +114,7 @@
 	
 	[objectsAndViews removeObject:triple];
 	
-	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (void) removeAllObjects {
@@ -141,7 +124,7 @@
 	}
 	[objectsAndViews removeAllObjects];
 	
-	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (BOOL) knowsARObject:(ARObject *)object {
@@ -175,8 +158,8 @@
 	CLHeading *heading = [[notification userInfo] valueForKey:@"heading"];
 	currentHeading = heading.trueHeading;
 	
-	arViewController.currentHeading = currentHeading;
-	radarViewController.currentHeading = currentHeading;
+	controllerViewAR.currentHeading = currentHeading;
+	controllerViewRadar.currentHeading = currentHeading;
 	
 	for (ARObjectViewTriple *pair in objectsAndViews) {
 		[pair.object updateWithNewHeading:currentHeading];
@@ -193,7 +176,7 @@
 		
 	}
 	
-	[activeViewController updateDisplayWithHeading:currentHeading];
+	[activeControllerView updateDisplayWithHeading:currentHeading];
 	
 }
 
@@ -223,44 +206,41 @@
 	}
 	
 	[loc release];
-	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 #pragma mark Other
 
-- (void) activateRadarView:(BOOL)shouldActivate {
-	isRadarActive = shouldActivate;
-	if (isRadarActive) {
-		[UIView beginAnimations:@"SwitchToRadarMode" context:arViewController.view];
-		[UIView setAnimationDuration:0.5];
-		[UIView setAnimationDelegate:self];
-		[UIView setAnimationDidStopSelector:@selector(removeViewAfterAnimation)];
-		[self.view insertSubview:radarViewController.view atIndex:0];
-		[arViewController viewWillDisappear:YES];
-		[radarViewController viewWillAppear:YES];
-		radarViewController.view.alpha = 1.0;
-		arViewController.view.alpha = 0.0;
-		[UIView commitAnimations];
-		activeViewController = radarViewController;
-	} else {
-		[UIView beginAnimations:@"SwitchTo360Mode" context:radarViewController.view];
-		[UIView setAnimationDuration:0.5];
-		[UIView setAnimationDelegate:self];
-		[UIView setAnimationDidStopSelector:@selector(removeViewAfterAnimation)];
-		[self.view insertSubview:arViewController.view atIndex:0];
-		[radarViewController viewWillDisappear:YES];
-		[arViewController viewWillAppear:YES];
-		arViewController.view.alpha = 1.0;
-		radarViewController.view.alpha = 0.0;
-		[UIView commitAnimations];
-		activeViewController = arViewController;
-	}
-	
-	[activeViewController replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+- (void) redraw {
+	[activeControllerView redraw];
 }
 
-- (void)removeViewAfterAnimation:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-	[(UIView *) context removeFromSuperview];
+- (void) activateRadarView:(BOOL)shouldActivate {	
+	isRadarActive = shouldActivate;
+	if (isRadarActive) {
+		[UIView beginAnimations:@"SwitchToRadarMode" context:controllerViewAR];
+		[UIView setAnimationDuration:0.5];
+		[controllerViewRadar setNeedsLayout];
+		[self bringSubviewToFront:controllerViewRadar];
+		controllerViewRadar.hidden = NO;
+		controllerViewRadar.alpha = 1.0;
+		controllerViewAR.alpha = 0.0;
+		controllerViewAR.hidden = YES;
+		[UIView commitAnimations];
+		activeControllerView = controllerViewRadar;
+	} else {
+		[UIView beginAnimations:@"SwitchTo360Mode" context:controllerViewRadar];
+		[UIView setAnimationDuration:0.5];
+		[self bringSubviewToFront:controllerViewAR];
+		controllerViewAR.hidden = NO;
+		controllerViewAR.alpha = 1.0;
+		controllerViewRadar.alpha = 0.0;
+		controllerViewRadar.hidden = YES;
+		[UIView commitAnimations];
+		activeControllerView = controllerViewAR;
+	}
+	
+	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 

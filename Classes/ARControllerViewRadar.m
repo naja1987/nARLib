@@ -1,18 +1,18 @@
-    //
-//  ARRadarViewController.m
+//
+//  ARControllerViewRadar.m
 //  nARLib
 //
 //  Created by Naja von Schmude on 15.07.10.
 //  Copyright 2010 Naja's Corner. All rights reserved.
 //
 
-#import "ARRadarViewController.h"
+#import "ARControllerViewRadar.h"
 #import "ARView.h"
 #import "Utils.h"
 #import "ARGeoLocation.h"
 #import "ARObjectViewTriple.h"
 
-@interface ARRadarViewController (Private)
+@interface ARControllerViewRadar (Private)
 
 - (CGPoint) calculatePositionOfARObjectViewTriple:(ARObjectViewTriple*) triple;
 - (void) moveAndTransformARViewOfTriple:(ARObjectViewTriple*) triple;
@@ -20,57 +20,37 @@
 @end
 
 
-@implementation ARRadarViewController
+@implementation ARControllerViewRadar
 
 @synthesize currentHeading;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
+- (id)initWithFrame:(CGRect)frame {
+    if ((self = [super initWithFrame:frame])) {
+		arTriples = [[NSMutableArray alloc] init];
+		
+		radarImage = [UIImage imageNamed:@"radar_circle.png"];
+		imageView = [[UIImageView alloc] initWithImage:radarImage];
+		imageView.frame = self.frame;
+		
+		self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+		self.opaque = NO;
+		self.autoresizesSubviews = YES;
+		
+		imageView.contentMode = UIViewContentModeCenter;
+		imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+		
+		[self addSubview:imageView];
     }
     return self;
 }
-*/
-
-
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-	[super loadView];
-	
-	arTriples = [[NSMutableArray alloc] init];
-}
-
 
 /*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 
 - (void)dealloc {
@@ -80,6 +60,9 @@
 	
 	[arTriples removeAllObjects];
 	[arTriples release];
+	
+	[imageView removeFromSuperview];
+	[imageView release];
 	
     [super dealloc];
 }
@@ -108,8 +91,16 @@
 			triple.viewRadar.layer.position = p;
 			
 			[arTriples addObject:triple];
-			[self.view addSubview:triple.viewRadar];
+			[self addSubview:triple.viewRadar];
 			
+			[self moveAndTransformARViewOfTriple:triple];
+		}
+	}
+}
+
+- (void) redraw {
+	@synchronized(self) {
+		for (ARObjectViewTriple *triple in arTriples) {
 			[self moveAndTransformARViewOfTriple:triple];
 		}
 	}
