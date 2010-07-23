@@ -78,7 +78,7 @@
 }
 
 + (BOOL) isHeadingAvailable {
-	return [locationManager headingAvailable];
+	return [CLLocationManager headingAvailable];
 }
 
 #pragma mark Start/ Stop

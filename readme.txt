@@ -1,3 +1,15 @@
+nARLib
+======
+
+nARLib - iOS Augmented Reality Library
+
+More information at
+	http://code.goolge.com/p/narlib
+
+
+LICENSE
+=======
+
 Copyright (c) 2010, Naja von Schmude
 All rights reserved.
 
