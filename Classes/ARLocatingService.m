@@ -39,9 +39,9 @@
 @implementation ARLocatingService
 
 @synthesize currentLocation,
-			currentHeading,
-			isSimulatingHeading,
-			isSimulatingLocation;
+currentHeading,
+isSimulatingHeading,
+isSimulatingLocation;
 
 #pragma mark Constructors
 
@@ -93,7 +93,7 @@
 		NSLog(@"Heading failure");
 		// error
 	}
-
+	
 }
 
 - (void) stopLocating {
@@ -123,14 +123,14 @@
 	BOOL useLocation = YES;
 	
 	if (currentLocation == nil) { // take always the first location
-		currentLocation = [newLocation copy];
+		currentLocation = [newLocation retain];
 	}
 	
 	// better accuracy then needed or of former position, so just mark as new current position
 	else if (newLocation.horizontalAccuracy <= locationManager.desiredAccuracy || newLocation.horizontalAccuracy <= currentLocation.horizontalAccuracy) {
 		if (currentLocation != newLocation) {
 			[currentLocation release];
-			currentLocation = [newLocation copy];
+			currentLocation = [newLocation retain];
 		}
 	}
 	else {
@@ -166,15 +166,18 @@
 		return;
 	}
 	
-	if (currentHeading != newHeading) {
+	if (currentHeading == nil) {
+		currentHeading = [newHeading retain];
+	}
+	else if (currentHeading != newHeading) {
 		[currentHeading release];
-		currentHeading = [newHeading copy];
+		currentHeading = [newHeading retain];
 	}
 	
 	// generate notification with new heading
 	NSDictionary *dict = [NSDictionary dictionaryWithObject:currentHeading forKey:@"heading"];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kHeadingChangeNotification object:self userInfo:dict]; 
-
+	
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
