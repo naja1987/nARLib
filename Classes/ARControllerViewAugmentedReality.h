@@ -37,13 +37,19 @@
 #import "ARControllerViewDelegate.h"
 #import "ARObjectViewTriple.h"
 
-@interface ARControllerViewAugmentedReality : UIView <ARControllerViewDelegate> {
+@interface ARControllerViewAugmentedReality : UIView <ARControllerViewDelegate, UIAccelerometerDelegate> {
 	NSMutableArray	*arTriples;
 	UIView			*transformerView;
 	
 	double			currentHeading;
+	UIAccelerometer *accelerometer;
+	
+	double			accelX, accelY, accelZ;
 }
 
 @property (assign) double currentHeading;
+
+- (void) startAccelerometer;
+- (void) stopAccelerometer;
 
 @end

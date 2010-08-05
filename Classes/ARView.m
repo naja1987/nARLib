@@ -38,7 +38,7 @@
 
 @implementation ARView
 
-@synthesize delegate, backgroundLayer, defaultBackgroundColor;
+@synthesize delegate, backgroundLayer, defaultBackgroundColor, originalPosition;
 
 #pragma mark Constructors
 

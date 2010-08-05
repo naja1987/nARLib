@@ -39,9 +39,9 @@
 @implementation ARLocatingService
 
 @synthesize currentLocation,
-currentHeading,
-isSimulatingHeading,
-isSimulatingLocation;
+			currentHeading,
+			isSimulatingHeading,
+			isSimulatingLocation;
 
 #pragma mark Constructors
 

@@ -35,7 +35,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kCameraApartueAngle 50
+#define kCameraApertureAngle 50
 
 // iPhone screen dimensions
 #define kScreenWidth  320

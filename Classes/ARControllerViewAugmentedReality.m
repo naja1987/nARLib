@@ -37,8 +37,10 @@
 #import "ARView.h"
 #import "ARObjectViewTriple.h"
 #import "ARGeoLocation.h"
+#import "Utils.h"
 
 #define kAR3DPerspectiveZDistance -500
+#define kFilteringFactor 0.25
 
 @interface ARControllerViewAugmentedReality (Private) 
 
@@ -65,6 +67,10 @@
 		transformerView.backgroundColor = [UIColor clearColor];
 		transformerView.layer.sublayerTransform = sublayerTransform;
 		[self addSubview:transformerView];
+		
+		// setup accelerometer
+		accelerometer = [UIAccelerometer sharedAccelerometer];
+		accelerometer.updateInterval = 1 / 15;
     }
     return self;
 }
@@ -122,12 +128,43 @@
 	}
 }
 
+- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
+	
+    // Use a basic low-pass filter to keep only the gravity component of each axis.
+	
+    accelX = (acceleration.x * kFilteringFactor) + (accelX * (1.0 - kFilteringFactor));
+    accelY = (acceleration.y * kFilteringFactor) + (accelY * (1.0 - kFilteringFactor));
+    accelZ = (acceleration.z * kFilteringFactor) + (accelZ * (1.0 - kFilteringFactor));
+	
+	double tilt = atan2(-accelX, accelZ);
+	
+//	double grad = RadiansToDegrees(tilt);
+//	NSLog(@"accel (%f, %f, %f) tilt: %f %f tilt diff %f", acceleration.x, acceleration.y, acceleration.z, tilt, grad);
+	
+	for (ARObjectViewTriple *triple in arTriples) {
+		CGPoint p = triple.viewAR.layer.position;
+		p.y = triple.viewAR.originalPosition.y + RadiansToDegrees(M_PI_2 - tilt) * 5;
+		triple.viewAR.layer.position = p;
+	}
+	
+}
+
 - (void) redraw {
 	@synchronized(self) {
 		for (ARObjectViewTriple *triple in arTriples) {
 			[self moveAndTransformARViewOfTriple:triple];
 		}
 	}
+}
+
+#pragma mark Other stuff
+
+- (void) startAccelerometer {
+	accelerometer.delegate = self;
+}
+
+- (void) stopAccelerometer {
+	accelerometer.delegate = nil;
 }
 
 - (void) unoverlapViews {
@@ -184,7 +221,7 @@
 						p.y = tripleIntersected.viewAR.layer.position.y - tripleIntersected.viewAR.layer.frame.size.height - 2;
 						triple.viewAR.layer.position = p;
 					}
-
+					
 					
 				}
 				// the geolocations have less priority ...
@@ -193,6 +230,7 @@
 					CGPoint p = triple.viewAR.layer.position;
 					p.y = tripleIntersected.viewAR.layer.position.y - tripleIntersected.viewAR.layer.frame.size.height - 2;
 					triple.viewAR.layer.position = p;
+
 				}
 				else if (![triple.object isKindOfClass:[ARGeoLocation class]] && [tripleIntersected isKindOfClass:[ARGeoLocation class]]) {
 					// move tripleIntersected up
@@ -206,7 +244,10 @@
 					p.y = triple.viewAR.layer.position.y - triple.viewAR.layer.frame.size.height - 2;
 					tripleIntersected.viewAR.layer.position = p;
 				}
-
+				
+				triple.viewAR.originalPosition = triple.viewAR.layer.position;
+				tripleIntersected.viewAR.originalPosition = tripleIntersected.viewAR.layer.position;
+				
 				[overlaped addObject:triple];
 				[overlaped addObject:tripleIntersected];
 			}
@@ -225,7 +266,7 @@
 - (CGPoint) calculatePositionOfARObjectViewTriple:(ARObjectViewTriple*) triple {
 	CGPoint p = CGPointMake(-1, -1);
 	CGFloat circle = 360.0;
-	CGFloat caa = kCameraApartueAngle;
+	CGFloat caa = kCameraApertureAngle;
 	p.x = kScreenHeight - (fmodf(currentHeading - triple.object.absoluteAngle + caa / 2, circle) * kScreenHeight / caa);
 	
 	CGFloat usableScreenHeight = kScreenWidth - triple.viewAR.frame.size.height;
@@ -249,7 +290,7 @@
 	p.y = oldY;
 	
 	CGFloat circle = 360.0;
-	CGFloat caa = kCameraApartueAngle;
+	CGFloat caa = kCameraApertureAngle;
 	CGFloat mod = fmodf(currentHeading - triple.object.absoluteAngle + caa / 2, circle);
 	
 	CGFloat angle = caa / 2 - fmodf(mod, caa);

@@ -3,3 +3,4 @@ syntax: glob
 nARLib.xcodeproj/*.mode1v3
 nARLib.xcodeproj/*.pbxuser
 build/*
+.DS_Store

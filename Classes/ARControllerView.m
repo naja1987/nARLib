@@ -59,6 +59,7 @@
 		
 		activeControllerView = controllerViewAR;
 		isRadarActive = NO;
+		[controllerViewAR startAccelerometer];
 		
 		[self addSubview:controllerViewRadar];
 		[self addSubview:controllerViewAR];
@@ -291,6 +292,7 @@
 		controllerViewAR.hidden = YES;
 		[UIView commitAnimations];
 		activeControllerView = controllerViewRadar;
+		[controllerViewAR stopAccelerometer];
 	} else {
 		[UIView beginAnimations:@"SwitchTo360Mode" context:controllerViewRadar];
 		[UIView setAnimationDuration:0.5];
@@ -301,6 +303,7 @@
 		controllerViewRadar.hidden = YES;
 		[UIView commitAnimations];
 		activeControllerView = controllerViewAR;
+		[controllerViewAR startAccelerometer];
 	}
 	
 	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
