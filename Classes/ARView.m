@@ -132,4 +132,8 @@
 	return sqrt(difX * difX + difY * difY);
 }
 
+- (NSString*) description {
+	return [NSString stringWithFormat:@"%@ - original pos: (%f, %f)", [super description], originalPosition.x, originalPosition.y];
+}
+
 @end

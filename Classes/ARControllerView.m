@@ -105,41 +105,7 @@
 #pragma mark Object Handling
 
 - (void) addObject:(ARObject *)object WithViewAR:(ARView *)viewAR WithViewRadar:(ARView *)viewRadar {
-	ARObjectViewTriple *triple = [self getTripleOfObject:object];
-	
-	// the object is already known, so just replace the view ...
-	if (triple != nil) {
-		[triple.viewAR removeFromSuperview];
-		triple.viewAR = viewAR;
-		[triple.viewRadar removeFromSuperview];
-		triple.viewRadar = viewRadar;
-	}
-	else {
-		triple = [[ARObjectViewTriple alloc] initWithObject:object ViewAR:viewAR ViewRadar:viewRadar];
-		
-		// update for current heading and location (to be sure)
-		[object updateWithNewHeading:currentHeading];
-		if ([object isKindOfClass:[ARGeoLocation class]]) {
-			[(ARGeoLocation*) object updateWithNewLocation:currentLocation];
-		}
-		
-		[objectsAndViews addObject:triple];
-		[triple release];
-	}
-	
-	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
-}
-
-- (void) addObjects:(NSMutableArray *)objects WithViewsAR:(NSMutableArray *)viewsAR WithViewsRadar:(NSMutableArray *)viewsRadar {
-	if (!([objects count] == [viewsAR count] && [objects count] == [viewsRadar count])) {
-		// TODO some type of error handling
-		return;
-	}
-	
-	for (int i = 0; i < [objects count]; ++i) {
-		ARObject *object = [objects objectAtIndex:i];
-		ARView *viewAR = [viewsAR objectAtIndex:i];
-		ARView *viewRadar = [viewsRadar objectAtIndex:i];
+	@synchronized(self) {
 		
 		ARObjectViewTriple *triple = [self getTripleOfObject:object];
 		
@@ -149,6 +115,9 @@
 			triple.viewAR = viewAR;
 			[triple.viewRadar removeFromSuperview];
 			triple.viewRadar = viewRadar;
+			
+			[objectsAndViews removeObject:triple];
+			[objectsAndViews addObject:triple];
 		}
 		else {
 			triple = [[ARObjectViewTriple alloc] initWithObject:object ViewAR:viewAR ViewRadar:viewRadar];
@@ -162,33 +131,83 @@
 			[objectsAndViews addObject:triple];
 			[triple release];
 		}
+		
+		[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 	}
+}
+
+- (void) addObjects:(NSMutableArray *)objects WithViewsAR:(NSMutableArray *)viewsAR WithViewsRadar:(NSMutableArray *)viewsRadar {
+	@synchronized(self) {
 	
-	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+		if (!([objects count] == [viewsAR count] && [objects count] == [viewsRadar count])) {
+			// TODO some type of error handling
+			return;
+		}
+		
+		for (int i = 0; i < [objects count]; ++i) {
+			ARObject *object = [objects objectAtIndex:i];
+			ARView *viewAR = [viewsAR objectAtIndex:i];
+			ARView *viewRadar = [viewsRadar objectAtIndex:i];
+			
+			ARObjectViewTriple *triple = [self getTripleOfObject:object];
+			
+			// the object is already known, so just replace the view ...
+			if (triple != nil) {
+				[triple.viewAR removeFromSuperview];
+				triple.viewAR = viewAR;
+				[triple.viewRadar removeFromSuperview];
+				triple.viewRadar = viewRadar;
+				
+				[objectsAndViews removeObject:triple];
+				[objectsAndViews addObject:triple];
+			}
+			else {
+				triple = [[ARObjectViewTriple alloc] initWithObject:object ViewAR:viewAR ViewRadar:viewRadar];
+				
+				// update for current heading and location (to be sure)
+				[object updateWithNewHeading:currentHeading];
+				if ([object isKindOfClass:[ARGeoLocation class]]) {
+					[(ARGeoLocation*) object updateWithNewLocation:currentLocation];
+				}
+				
+				[objectsAndViews addObject:triple];
+				[triple release];
+			}
+		}
+		
+		[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+	}
 }
 
 - (void) removeObject:(ARObject *)object {
-	ARObjectViewTriple *triple = [self getTripleOfObject:object];
-	if (triple == nil) { // object not found
-		return;
+	@synchronized(self) {
+	
+		ARObjectViewTriple *triple = [self getTripleOfObject:object];
+		if (triple == nil) { // object not found
+			return;
+		}
+		
+		[triple.viewAR removeFromSuperview];
+		[triple.viewRadar removeFromSuperview];
+		
+		[objectsAndViews removeObject:triple];
+		
+		[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 	}
-	
-	[triple.viewAR removeFromSuperview];
-	[triple.viewRadar removeFromSuperview];
-	
-	[objectsAndViews removeObject:triple];
-	
-	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 - (void) removeAllObjects {
-	for (ARObjectViewTriple *triple in objectsAndViews) {
-		[triple.viewAR removeFromSuperview];
-		[triple.viewRadar removeFromSuperview];
-	}
-	[objectsAndViews removeAllObjects];
+	@synchronized(self) {
 	
-	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+		for (ARObjectViewTriple *triple in objectsAndViews) {
+			[triple.viewAR removeFromSuperview];
+			[triple.viewRadar removeFromSuperview];
+		}
+		[objectsAndViews removeAllObjects];
+		
+		[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+		
+	}
 }
 
 - (BOOL) knowsARObject:(ARObject *)object {
@@ -218,59 +237,66 @@
 #pragma mark Process incoming notifications
 
 - (void) processHeadingUpdate:(NSNotification *)notification {
-	// extract heading information from notification
-	CLHeading *heading = [[notification userInfo] valueForKey:@"heading"];
-	currentHeading = heading.trueHeading;
+	@synchronized(self) {
 	
-	controllerViewAR.currentHeading = currentHeading;
-	controllerViewRadar.currentHeading = currentHeading;
-	
-	for (ARObjectViewTriple *pair in objectsAndViews) {
-		[pair.object updateWithNewHeading:currentHeading];
+		// extract heading information from notification
+		CLHeading *heading = [[notification userInfo] valueForKey:@"heading"];
+		currentHeading = heading.trueHeading;
 		
-		// updates the object
-		if (pair.object.delegate != nil) {
-			[pair.object.delegate update];
+		controllerViewAR.currentHeading = currentHeading;
+		controllerViewRadar.currentHeading = currentHeading;
+		
+		for (ARObjectViewTriple *pair in objectsAndViews) {
+			[pair.object updateWithNewHeading:currentHeading];
+			
+			// updates the object
+			if (pair.object.delegate != nil) {
+				[pair.object.delegate update];
+			}
+			
+			// updates the corresponding view with the new information from the object
+			if (pair.viewAR.delegate != nil) {
+				[pair.viewAR.delegate updateWithInfosFromObject:pair.object];
+			}
+			
 		}
 		
-		// updates the corresponding view with the new information from the object
-		if (pair.viewAR.delegate != nil) {
-			[pair.viewAR.delegate updateWithInfosFromObject:pair.object];
-		}
+		[activeControllerView updateDisplayWithHeading:currentHeading];
 		
 	}
-	
-	[activeControllerView updateDisplayWithHeading:currentHeading];
-	
 }
 
 - (void) processLocationUpdate:(NSNotification *)notification {
-	// extract location from notification
-	double latitude = [[[notification userInfo] valueForKey:@"latitude"] doubleValue];
-	double longitude = [[[notification userInfo] valueForKey:@"longitude"] doubleValue];
-	CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-	
-	for (ARObjectViewTriple *pair in objectsAndViews) {
+	@synchronized(self) {
 		
-		// just update location for ARGeoLocation objects ...
-		if ([pair.object isKindOfClass:[ARGeoLocation class]]) {
-			ARGeoLocation *geoloc = (ARGeoLocation*) pair.object;
-			[geoloc updateWithNewLocation:loc];
+		// extract location from notification
+		double latitude = [[[notification userInfo] valueForKey:@"latitude"] doubleValue];
+		double longitude = [[[notification userInfo] valueForKey:@"longitude"] doubleValue];
+		CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+		
+		for (ARObjectViewTriple *pair in objectsAndViews) {
 			
-			// update the object
-			if (geoloc.delegate != nil) {
-				[geoloc.delegate update];
-			}
-			
-			// update the corresponding view with the new information from the object
-			if (pair.viewAR.delegate != nil) {
-				[pair.viewAR.delegate updateWithInfosFromObject:geoloc];
+			// just update location for ARGeoLocation objects ...
+			if ([pair.object isKindOfClass:[ARGeoLocation class]]) {
+				ARGeoLocation *geoloc = (ARGeoLocation*) pair.object;
+				[geoloc updateWithNewLocation:loc];
+				
+				// update the object
+				if (geoloc.delegate != nil) {
+					[geoloc.delegate update];
+				}
+				
+				// update the corresponding view with the new information from the object
+				if (pair.viewAR.delegate != nil) {
+					[pair.viewAR.delegate updateWithInfosFromObject:geoloc];
+				}
 			}
 		}
+		
+		[loc release];
+		[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
+		
 	}
-	
-	[loc release];
-	[activeControllerView replaceViewsWithViewsFromObjectViewTriple:objectsAndViews];
 }
 
 #pragma mark Other

@@ -99,6 +99,7 @@
 
 - (void) updateDisplayWithHeading:(double) heading {
 	@synchronized(self) {
+		
 		currentHeading = heading;
 		for (ARObjectViewTriple *triple in arTriples) {
 			[self moveAndTransformARViewOfTriple:triple];
@@ -109,22 +110,24 @@
 
 - (void) replaceViewsWithViewsFromObjectViewTriple:(NSMutableArray*) triples {
 	@synchronized(self) {
+		
 		// remove old stuff
 		for (ARObjectViewTriple *triple in arTriples) {
 			[triple.viewAR removeFromSuperview]; 
 		}
 		[arTriples removeAllObjects];
 		
-		
 		for (ARObjectViewTriple *triple in triples) {
 			CGPoint p = [self calculatePositionOfARObjectViewTriple:triple];			
 			triple.viewAR.layer.position = p;
+			triple.viewAR.originalPosition = p;
 			[arTriples addObject:triple];
 			[transformerView addSubview:triple.viewAR];
 			
 			[self moveAndTransformARViewOfTriple:triple];
 		}
 		[self unoverlapViews];
+		
 	}
 }
 
@@ -141,19 +144,27 @@
 //	double grad = RadiansToDegrees(tilt);
 //	NSLog(@"accel (%f, %f, %f) tilt: %f %f tilt diff %f", acceleration.x, acceleration.y, acceleration.z, tilt, grad);
 	
-	for (ARObjectViewTriple *triple in arTriples) {
-		CGPoint p = triple.viewAR.layer.position;
-		p.y = triple.viewAR.originalPosition.y + RadiansToDegrees(M_PI_2 - tilt) * 5;
-		triple.viewAR.layer.position = p;
+	// update y position of views
+	@synchronized(self) {
+		
+		for (ARObjectViewTriple *triple in arTriples) {
+			CGPoint p = triple.viewAR.layer.position;
+			p.y = triple.viewAR.originalPosition.y + RadiansToDegrees(M_PI_2 - tilt) * 5;
+			triple.viewAR.layer.position = p;
+		
+			[self moveAndTransformARViewOfTriple:triple];
+		}
+		
 	}
-	
 }
 
 - (void) redraw {
 	@synchronized(self) {
+		
 		for (ARObjectViewTriple *triple in arTriples) {
 			[self moveAndTransformARViewOfTriple:triple];
 		}
+		
 	}
 }
 
@@ -169,6 +180,7 @@
 
 - (void) unoverlapViews {
 	@synchronized(self) {
+		
 		//        output = new RectangleSet
 		//        while input.length > 0 do
 		//          nextRect = input.pop()
@@ -222,7 +234,6 @@
 						triple.viewAR.layer.position = p;
 					}
 					
-					
 				}
 				// the geolocations have less priority ...
 				else if ([triple.object isKindOfClass:[ARGeoLocation class]] && ![tripleIntersected isKindOfClass:[ARGeoLocation class]]) {
@@ -245,6 +256,7 @@
 					tripleIntersected.viewAR.layer.position = p;
 				}
 				
+				// store original position
 				triple.viewAR.originalPosition = triple.viewAR.layer.position;
 				tripleIntersected.viewAR.originalPosition = tripleIntersected.viewAR.layer.position;
 				
@@ -259,8 +271,8 @@
 		
 		[unoverlaped removeAllObjects];
 		[unoverlaped release];
+		
 	}
-	
 }
 
 - (CGPoint) calculatePositionOfARObjectViewTriple:(ARObjectViewTriple*) triple {
@@ -298,7 +310,7 @@
 	triple.viewAR.layer.position = p;
 	
 	[UIView beginAnimations:@"ARViewMove" context:NULL];
-	[UIView setAnimationDuration:0.25];
+	[UIView setAnimationDuration:0.2];
 	if (p.x < 0 || p.x > kScreenHeight) {
 		triple.viewAR.alpha = 0.0;
 	}
@@ -314,9 +326,6 @@
 		triple.viewAR.alpha = 1.0;
 	}
 	[UIView commitAnimations];
-	
-	
 }
-
 
 @end

@@ -98,15 +98,18 @@
 
 - (void) updateDisplayWithHeading:(double) heading {
 	@synchronized(self) {
+		
 		currentHeading = heading;
 		for (ARObjectViewTriple *triple in arTriples) {
 			[self moveAndTransformARViewOfTriple:triple];
 		}
+		
 	}
 }
 
 - (void) replaceViewsWithViewsFromObjectViewTriple:(NSMutableArray*) triples {
 	@synchronized(self) {
+		
 		for (ARObjectViewTriple *triple in arTriples) {
 			[triple.viewRadar removeFromSuperview];
 		}
@@ -122,14 +125,17 @@
 			
 			[self moveAndTransformARViewOfTriple:triple];
 		}
+		
 	}
 }
 
 - (void) redraw {
 	@synchronized(self) {
+		
 		for (ARObjectViewTriple *triple in arTriples) {
 			[self moveAndTransformARViewOfTriple:triple];
 		}
+		
 	}
 }
 

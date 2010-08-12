@@ -42,7 +42,7 @@
 	UIView			*transformerView;
 	
 	double			currentHeading;
-	UIAccelerometer *accelerometer;
+	UIAccelerometer	*accelerometer;
 	
 	double			accelX, accelY, accelZ;
 }
