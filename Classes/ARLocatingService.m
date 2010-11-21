@@ -99,6 +99,11 @@
 - (void) stopLocating {
 	[locationManager stopUpdatingLocation];
 	[locationManager stopUpdatingHeading];
+	
+	[currentHeading release];
+	currentHeading = nil;
+	[currentLocation release];
+	currentLocation = nil;
 }
 
 #pragma mark CLLocationManagerDelegate protocol
