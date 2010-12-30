@@ -1,6 +1,9 @@
 syntax: glob
 
-nARLib.xcodeproj/*.mode1v3
-nARLib.xcodeproj/*.pbxuser
-build/*
+code/nARLib.xcodeproj/*.mode1v3
+code/nARLib.xcodeproj/*.pbxuser
+code/build/*
+example/example.xcodeproj/*.mode1v3
+example/example.xcodeproj/*.pbxuser
+example/build/*
 .DS_Store

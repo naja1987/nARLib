@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		290E6CC312CC99A700E88DE4 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 290E6CC212CC99A700E88DE4 /* Utils.m */; };
 		2925E54711F49D3600D61772 /* ARControllerViewAugmentedReality.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53211F49D3600D61772 /* ARControllerViewAugmentedReality.h */; };
 		2925E54811F49D3600D61772 /* ARControllerViewAugmentedReality.m in Sources */ = {isa = PBXBuildFile; fileRef = 2925E53311F49D3600D61772 /* ARControllerViewAugmentedReality.m */; };
 		2925E54911F49D3600D61772 /* ARControllerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E53411F49D3600D61772 /* ARControllerView.h */; };
@@ -29,7 +30,6 @@
 		2925E55A11F49D3600D61772 /* ARViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54511F49D3600D61772 /* ARViewDelegate.h */; };
 		2925E55B11F49D3600D61772 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2925E54611F49D3600D61772 /* Utils.h */; };
 		29489B4411ED15A2005B6F07 /* ARLocatingService.h in Headers */ = {isa = PBXBuildFile; fileRef = 29489B4211ED15A2005B6F07 /* ARLocatingService.h */; };
-		2984C1E111F5E78900240B85 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2984C1E011F5E78900240B85 /* Utils.m */; };
 		298969E711F49368005256D8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298969E611F49368005256D8 /* CoreLocation.framework */; };
 		298969EB11F4937B005256D8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298969EA11F4937B005256D8 /* QuartzCore.framework */; };
 		29896A3911F495B6005256D8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29896A3811F495B6005256D8 /* UIKit.framework */; };
@@ -38,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		290E6CC212CC99A700E88DE4 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = Classes/Utils.m; sourceTree = "<group>"; };
+		290E6CC412CC99C500E88DE4 /* radar_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = radar_circle.png; path = Images/radar_circle.png; sourceTree = "<group>"; };
 		2925E53211F49D3600D61772 /* ARControllerViewAugmentedReality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerViewAugmentedReality.h; path = Classes/ARControllerViewAugmentedReality.h; sourceTree = "<group>"; };
 		2925E53311F49D3600D61772 /* ARControllerViewAugmentedReality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARControllerViewAugmentedReality.m; path = Classes/ARControllerViewAugmentedReality.m; sourceTree = "<group>"; };
 		2925E53411F49D3600D61772 /* ARControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerView.h; path = Classes/ARControllerView.h; sourceTree = "<group>"; };
@@ -60,8 +62,6 @@
 		2925E54511F49D3600D61772 /* ARViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewDelegate.h; path = Classes/ARViewDelegate.h; sourceTree = "<group>"; };
 		2925E54611F49D3600D61772 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = Classes/Utils.h; sourceTree = "<group>"; };
 		29489B4211ED15A2005B6F07 /* ARLocatingService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLocatingService.h; path = Classes/ARLocatingService.h; sourceTree = "<group>"; };
-		2984C1E011F5E78900240B85 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = ../narlib/Classes/Utils.m; sourceTree = SOURCE_ROOT; };
-		2984C3B011F60C3E00240B85 /* radar_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = radar_circle.png; path = ../narlib/Images/radar_circle.png; sourceTree = SOURCE_ROOT; };
 		298969E611F49368005256D8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		298969EA11F4937B005256D8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		29896A3811F495B6005256D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -123,7 +123,7 @@
 				2979DD3E11EF28BF0080B36B /* Views */,
 				2979DD4011EF28FB0080B36B /* Controller Views */,
 				2925E54611F49D3600D61772 /* Utils.h */,
-				2984C1E011F5E78900240B85 /* Utils.m */,
+				290E6CC212CC99A700E88DE4 /* Utils.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -180,7 +180,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				2984C3B011F60C3E00240B85 /* radar_circle.png */,
+				290E6CC412CC99C500E88DE4 /* radar_circle.png */,
 				AA747D9E0F9514B9006C5449 /* nARLib_Prefix.pch */,
 			);
 			name = "Other Sources";
@@ -272,7 +272,7 @@
 				2925E55411F49D3600D61772 /* ARObjectViewTriple.m in Sources */,
 				2925E55611F49D3600D61772 /* ARControllerViewRadar.m in Sources */,
 				2925E55811F49D3600D61772 /* ARView.m in Sources */,
-				2984C1E111F5E78900240B85 /* Utils.m in Sources */,
+				290E6CC312CC99A700E88DE4 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

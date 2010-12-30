@@ -85,9 +85,10 @@
 
 
 - (void)dealloc {
-	for (ARView *view in arTriples) {
-		[view removeFromSuperview];
+	for (ARObjectViewTriple *triple in arTriples) {
+		[triple.viewAR removeFromSuperview];
 	}
+	
 	[arTriples removeAllObjects];
 	[transformerView removeFromSuperview];
 	[transformerView release];
