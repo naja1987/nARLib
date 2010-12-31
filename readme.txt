@@ -4,7 +4,7 @@ nARLib
 nARLib - iOS Augmented Reality Library
 
 More information at
-	http://code.google.com/p/narlib/
+	https://github.com/naja1987/nARLib
 
 
 LICENSE
