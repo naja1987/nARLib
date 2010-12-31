@@ -1,5 +1,3 @@
-syntax: glob
-
 code/nARLib.xcodeproj/*.mode1v3
 code/nARLib.xcodeproj/*.pbxuser
 code/build/*
